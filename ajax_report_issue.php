@@ -12,8 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 	exit;
 }
 
-if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['staff','admin'])) {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['student', 'staff', 'admin'])) {
 	if (function_exists('ob_get_length') && ob_get_length() !== false) { @ob_end_clean(); }
+	http_response_code(403);
 	echo json_encode(['success' => false, 'message' => 'Unauthorized']);
 	exit;
 }
@@ -41,6 +42,17 @@ if ($conn->connect_error) {
 }
 $conn->set_charset('utf8mb4');
 
+// Ensure issues table exists
+$conn->query("CREATE TABLE IF NOT EXISTS issues (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	user_id INT NOT NULL,
+	system_number VARCHAR(100) NOT NULL,
+	description TEXT NOT NULL,
+	status ENUM('pending', 'fixed') DEFAULT 'pending',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	fixed_at DATETIME NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
 $stmt = $conn->prepare("INSERT INTO issues (user_id, system_number, description, status, created_at) VALUES (?, ?, ?, 'pending', NOW())");
 if (!$stmt) {
 	$conn->close();
@@ -54,4 +66,4 @@ $stmt->close();
 $conn->close();
 
 if (function_exists('ob_get_length') && ob_get_length() !== false) { @ob_end_clean(); }
-echo json_encode(['success' => $ok]);
+echo json_encode(['success' => $ok, 'message' => $ok ? 'Issue reported successfully' : 'Failed to report issue']);
