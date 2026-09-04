@@ -26,7 +26,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $db_host = 'localhost';
 $db_user = 'root';
 $db_pass = '';
-$db_name = 'lars';
+$db_name = 'LARS';
 
 try {
     // Create DB connection
@@ -39,52 +39,49 @@ try {
     $conn->set_charset("utf8mb4");
 
     // Get the college name from POST data
-    $college_name = isset($_POST['college_name']) ? trim($conn->real_escape_string($_POST['college_name'])) : '';
+    $college_name = isset($_POST['college_name']) ? trim($_POST['college_name']) : '';
 
     // Validate input
     if (empty($college_name)) {
         throw new Exception('College name cannot be empty');
     }
 
-    // Check if system_settings table exists, create if it doesn't
-    $check_table = $conn->query("SHOW TABLES LIKE 'system_settings'");
+    // Ensure settings and system_settings tables exist
+    $conn->query("CREATE TABLE IF NOT EXISTS settings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        setting_key VARCHAR(100) NOT NULL UNIQUE,
+        setting_value TEXT,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $conn->query("CREATE TABLE IF NOT EXISTS system_settings (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        setting_key VARCHAR(100) NOT NULL UNIQUE,
+        setting_value TEXT,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
     
-    if (!$check_table) {
-        throw new Exception("Error checking for table: " . $conn->error);
+    // Insert or update college name in system_settings
+    $stmt1 = $conn->prepare("INSERT INTO system_settings (setting_key, setting_value) 
+                             VALUES ('college_name', ?) 
+                             ON DUPLICATE KEY UPDATE setting_value = ?, updated_at = CURRENT_TIMESTAMP");
+    if ($stmt1) {
+        $stmt1->bind_param("ss", $college_name, $college_name);
+        $stmt1->execute();
+        $stmt1->close();
+    }
+
+    // Insert or update college name in settings table for PDF and reports compatibility
+    $stmt2 = $conn->prepare("INSERT INTO settings (setting_key, setting_value) 
+                             VALUES ('college_name', ?) 
+                             ON DUPLICATE KEY UPDATE setting_value = ?, updated_at = CURRENT_TIMESTAMP");
+    if ($stmt2) {
+        $stmt2->bind_param("ss", $college_name, $college_name);
+        $stmt2->execute();
+        $stmt2->close();
     }
     
-    if ($check_table->num_rows == 0) {
-        // Create system_settings table if it doesn't exist
-        $create_table = "CREATE TABLE IF NOT EXISTS system_settings (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            setting_key VARCHAR(100) NOT NULL UNIQUE,
-            setting_value TEXT,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-        
-        if (!$conn->query($create_table)) {
-            throw new Exception("Failed to create system_settings table: " . $conn->error);
-        }
-    }
-    
-    // Insert or update college name using prepared statement
-    $query = "INSERT INTO system_settings (setting_key, setting_value) 
-              VALUES ('college_name', ?) 
-              ON DUPLICATE KEY UPDATE setting_value = ?, updated_at = CURRENT_TIMESTAMP";
-    
-    $stmt = $conn->prepare($query);
-    if (!$stmt) {
-        throw new Exception("Prepare failed: " . $conn->error);
-    }
-    
-    $stmt->bind_param("ss", $college_name, $college_name);
-    
-    if (!$stmt->execute()) {
-        throw new Exception("Execute failed: " . $stmt->error);
-    }
-    
-    $stmt->close();
     $conn->close();
     
     // Return success response
