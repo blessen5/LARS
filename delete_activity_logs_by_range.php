@@ -7,11 +7,12 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staf
     exit();
 }
 
-$conn = new mysqli('localhost', 'root', '', 'lab_activity_system3');
+$conn = new mysqli('localhost', 'root', '', 'LARS');
 if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => 'Database connection failed']);
     exit();
 }
+$conn->set_charset("utf8mb4");
 
 $start_date = $_POST['start_date'] ?? '';
 $end_date = $_POST['end_date'] ?? '';

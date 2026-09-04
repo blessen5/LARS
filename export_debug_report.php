@@ -7,10 +7,11 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'staf
 
 require_once('TCPDF-main/tcpdf.php');
 
-$conn = new mysqli('localhost', 'root', '', 'lab_activity_system3');
+$conn = new mysqli('localhost', 'root', '', 'LARS');
 if ($conn->connect_error) {
     die('Database connection failed');
 }
+$conn->set_charset("utf8mb4");
 
 // Get all settings from database
 $logo_path = '';
