@@ -1,0 +1,328 @@
+/* Dark Theme for Lab Activity Reporting System - Admin Dashboard */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    min-height: 100vh;
+    color: #e2e8f0;
+}
+
+/* Header Styles */
+.header {
+    background: linear-gradient(135deg, #4c51bf 0%, #5b63d3 100%);
+    padding: 15px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.header-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+}
+
+.header-actions .user-info {
+    font-size: 14px;
+    color: white;
+}
+
+.btn {
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background: #16a34a;
+    border-color: #16a34a;
+}
+
+.btn-success:hover {
+    background: #15803d;
+    border-color: #15803d;
+}
+
+.btn-danger {
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+}
+
+.btn-primary {
+    background: #6366f1;
+    border-color: #6366f1;
+}
+
+.btn-primary:hover {
+    background: #5558e3;
+    border-color: #5558e3;
+}
+
+.btn-warning {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: #d97706;
+    border-color: #d97706;
+}
+
+.btn-purple {
+    background: #a855f7;
+    border-color: #a855f7;
+    color: white;
+}
+
+.btn-purple:hover {
+    background: #9333ea;
+    border-color: #9333ea;
+}
+
+/* Greeting */
+.greeting {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: white;
+}
+
+/* Card Styles */
+.card {
+    background: #2d3748;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #e2e8f0;
+}
+
+/* Usage Display */
+.usage-display {
+    font-size: 48px;
+    font-weight: 700;
+    color: #818cf8;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    color: #64748b;
+    padding: 30px;
+    font-size: 14px;
+}
+
+.empty-state-small {
+    color: #64748b;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+/* Table Styles */
+.table-dark {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+.table-dark th {
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #334155;
+}
+
+.table-dark td {
+    color: #e2e8f0;
+    border-bottom: 1px solid #334155;
+}
+
+.table-hover tbody tr:hover {
+    background: #334155;
+}
+
+/* Form Controls */
+.form-control,
+.form-select {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: #0f172a;
+    border-color: #6366f1;
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+}
+
+.form-control::placeholder {
+    color: #64748b;
+}
+
+.form-label {
+    color: #e2e8f0;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Accordion Styles */
+.accordion {
+    --bs-accordion-bg: #2d3748;
+    --bs-accordion-border-color: #334155;
+    --bs-accordion-btn-color: #e2e8f0;
+    --bs-accordion-btn-bg: #374151;
+    --bs-accordion-active-color: #e2e8f0;
+    --bs-accordion-active-bg: #475569;
+    --bs-accordion-btn-focus-border-color: #6366f1;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+}
+
+.accordion-button {
+    font-weight: 600;
+    padding: 15px 20px;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #e2e8f0;
+    background: #475569;
+}
+
+.accordion-button::after {
+    filter: invert(1);
+}
+
+.accordion-body {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+.accordion-item {
+    background: #2d3748;
+    border: 1px solid #334155;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 6px 12px;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+/* Issue and Request Items */
+.issue-item,
+.request-item {
+    padding: 12px;
+    background: #1e293b;
+    border-radius: 8px;
+    border-left: 3px solid #6366f1;
+}
+
+/* Subject Item */
+.subject-item {
+    background: #1e293b !important;
+}
+
+/* Logo Styles */
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #4c51bf;
+    font-size: 18px;
+}
+
+.logo-preview {
+    min-width: 100px;
+}
+
+/* Alert Styles */
+.alert-success {
+    background: #16a34a;
+    color: white;
+    border: none;
+}
+
+.alert-danger {
+    background: #dc2626;
+    color: white;
+    border: none;
+}
+
+/* Input Group */
+.input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-title {
+        font-size: 18px;
+    }
+    
+    .greeting {
+        font-size: 22px;
+    }
+    
+    .usage-display {
+        font-size: 36px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}

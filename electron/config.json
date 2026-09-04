@@ -1,0 +1,10 @@
+{
+  "serverUrl": "http://your-server-ip",
+  "appName": "Lab Activity System",
+  "updateServer": "http://your-server-ip/updates",
+  "features": {
+    "offlineMode": false,
+    "autoUpdate": true,
+    "systemTray": true
+  }
+}

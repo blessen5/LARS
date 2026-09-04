@@ -1,0 +1,28 @@
+{
+  "name": "lab-activity-system",
+  "version": "1.0.0",
+  "description": "Lab Activity Reporting System Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "package-win": "electron-packager . LabActivitySystem --platform=win32 --arch=x64 --out=release-builds --asar --icon=assets/icons/win/icon.ico",
+    "create-installer-win": "node build/installer.js"
+  },
+  "build": {
+    "appId": "com.lab.activity",
+    "win": {
+      "target": ["nsis"],
+      "icon": "assets/icons/win/icon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^24.6.4",
+    "electron-packager": "^17.1.2",
+    "electron-winstaller": "^5.1.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.4"
+  }
+}

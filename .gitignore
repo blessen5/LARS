@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+electron/node_modules/
+
+# Logs
+logs/*.log
+*.log
+
+# IDE & Editor files
+.vscode/
+.idea/
+.kilo/
+.kilocode/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# OS generated
+.DS_Store
+Thumbs.db
+desktop.ini
+._*

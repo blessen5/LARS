@@ -1,0 +1,33 @@
+/* Shared app styles used by dashboards and non-dashboard pages */
+:root {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: #0f3460;
+    --text-primary: #ffffff;
+    --accent: #6366f1;
+}
+
+body {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif;
+}
+
+.header {
+    background: var(--accent);
+    padding: 12px 24px;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.header-title { font-size: 18px; font-weight: 700; }
+.header-actions .btn { margin-left: 8px; }
+
+.btn-primary { background: var(--accent); border: none; }
+.btn-secondary { background: #64748b; border: none; }
+
+/* Small utility to match card look */
+.card-like { background: #2d3748; padding: 20px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+
+/* Notifications */
+.notification-item { padding: 10px; background: #1e293b; border-radius: 8px; margin-bottom: 8px; }

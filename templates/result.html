@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Your Recommended PC Build</h1>
+    <p>Based on your budget of <strong>${{ budget }}</strong> and usage for <strong>{{ 'Programming/Development' if usage == 'programming' else 'Office/General Use' }}</strong>, here's your recommended configuration:</p>
+    
+    <div class="specs">
+        <div class="spec-item">
+            <span class="spec-category">Processor (CPU):</span>
+            <span>{{ recommendation.cpu }}</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-category">Graphics (GPU):</span>
+            <span>{{ recommendation.gpu }}</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-category">Memory (RAM):</span>
+            <span>{{ recommendation.ram }}</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-category">Storage:</span>
+            <span>{{ recommendation.storage }}</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-category">Motherboard:</span>
+            <span>{{ recommendation.motherboard }}</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-category">Power Supply:</span>
+            <span>{{ recommendation.power_supply }}</span>
+        </div>
+        <div class="spec-item">
+            <span class="spec-category">Case:</span>
+            <span>{{ recommendation.case }}</span>
+        </div>
+        <div class="spec-item" style="font-weight: bold; font-size: 1.1em; margin-top: 20px; border-top: 2px solid #eee; padding-top: 15px;">
+            <span>Estimated Price:</span>
+            <span>{{ recommendation.estimated_price }}</span>
+        </div>
+    </div>
+    
+    <a href="{{ url_for('index') }}" class="back-btn">← Start Over</a>
+{% endblock %}
