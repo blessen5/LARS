@@ -52,29 +52,38 @@ $stmt->execute();
 $existsRes = $stmt->get_result();
 $stmt->close();
 if ($existsRes && $existsRes->num_rows > 0) {
-    echo json_encode(['success' => false, 'message' => 'Username already exists']);
+    echo json_encode(['success' => false, 'message' => 'Username already exists in active users']);
     $conn->close();
     exit;
 }
 
-// Create the staff user
-$stmt = $conn->prepare("INSERT INTO users (name, admission_number, username, password, role, department, year, start_year, duration) VALUES (?, NULL, ?, ?, 'staff', NULL, NULL, NULL, NULL)");
-$stmt->bind_param('sss', $request['name'], $request['username'], $request['password']);
-$ok = $stmt->execute();
-$stmt->close();
+// Begin transaction for atomic creation and deletion
+$conn->begin_transaction();
 
-if (!$ok) {
-    echo json_encode(['success' => false, 'message' => 'Failed to create user']);
+try {
+    // Create the staff user
+    $stmt = $conn->prepare("INSERT INTO users (name, admission_number, username, password, role, department, year, start_year, duration) VALUES (?, NULL, ?, ?, 'staff', NULL, NULL, NULL, NULL)");
+    $stmt->bind_param('sss', $request['name'], $request['username'], $request['password']);
+    if (!$stmt->execute()) {
+        throw new Exception('Failed to insert approved staff account');
+    }
+    $stmt->close();
+
+    // Delete the pending request
+    $stmt = $conn->prepare("DELETE FROM pending_staff_requests WHERE id = ?");
+    $stmt->bind_param('i', $id);
+    if (!$stmt->execute()) {
+        throw new Exception('Failed to clear pending request');
+    }
+    $stmt->close();
+
+    $conn->commit();
     $conn->close();
-    exit;
+    echo json_encode(['success' => true, 'message' => 'Staff account approved successfully']);
+} catch (Exception $e) {
+    $conn->rollback();
+    $conn->close();
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
-
-// Delete the pending request
-$stmt = $conn->prepare("DELETE FROM pending_staff_requests WHERE id = ?");
-$stmt->bind_param('i', $id);
-$stmt->execute();
-$stmt->close();
-
-$conn->close();
-
-echo json_encode(['success' => true]);
+?>

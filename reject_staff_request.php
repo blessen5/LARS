@@ -29,12 +29,20 @@ if ($conn->connect_error) {
     exit;
 }
 
+$conn->set_charset('utf8mb4');
+
 $conn->query("CREATE TABLE IF NOT EXISTS pending_staff_requests (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, username VARCHAR(191) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, requested_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP)");
 
 $stmt = $conn->prepare("DELETE FROM pending_staff_requests WHERE id = ?");
 $stmt->bind_param('i', $id);
 $ok = $stmt->execute();
+$affected = $stmt->affected_rows;
 $stmt->close();
 $conn->close();
 
-echo json_encode(['success' => $ok]);
+if ($ok && $affected > 0) {
+    echo json_encode(['success' => true, 'message' => 'Staff request rejected and removed']);
+} else {
+    echo json_encode(['success' => false, 'message' => 'Request not found or already handled']);
+}
+?>
