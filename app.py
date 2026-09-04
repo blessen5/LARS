@@ -67,17 +67,24 @@ def get_recommendation(budget, usage):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        budget = request.form.get('budget', 1000)
-        usage = request.form.get('usage', 'office')
+        raw_budget = str(request.form.get('budget', '1000')).strip()
+        usage = str(request.form.get('usage', 'office')).strip().lower()
         
-        if not budget.isdigit() or int(budget) < 400:
-            error = "Please enter a valid budget (minimum $400)."
+        if usage not in ['programming', 'office']:
+            usage = 'office'
+        
+        try:
+            budget_val = int(raw_budget)
+            if budget_val < 400 or budget_val > 10000:
+                raise ValueError("Budget out of range")
+        except (ValueError, TypeError):
+            error = "Please enter a valid budget between $400 and $10,000."
             return render_template('index.html', error=error)
             
-        recommendation = get_recommendation(budget, usage)
-        return render_template('result.html', recommendation=recommendation, budget=budget, usage=usage)
+        recommendation = get_recommendation(budget_val, usage)
+        return render_template('result.html', recommendation=recommendation, budget=budget_val, usage=usage)
     
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
